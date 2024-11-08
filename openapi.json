@@ -1,0 +1,191 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Z - Your Blog application",
+    "description": "With Z you can create, update, delete and get blog entries",
+    "version": "v2",
+    "contact": {
+      "name": "example@mail.schwarz"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/blogs": {
+      "get": {
+        "summary": "Get all Blog-Entries",
+        "description": "Retrieve all existing blog entries.",
+        "operationId": "get-all-blog-entries",
+        "responses": {
+          "200": {
+            "description": "Blog entries retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BlogEntry"
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No blog entries found."
+          },
+          "400": {
+            "description": "Invalid request parameters."
+          }
+        },
+        "tags": ["blog"]
+      },
+      "post": {
+        "summary": "Create a new Blog-Entry",
+        "description": "Create a new blog entry with headline and text content.",
+        "operationId": "create-new-blog-entry",
+        "tags": ["blog"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlogEntry"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Blog entry created successfully."
+          },
+          "400": {
+            "description": "Invalid request body."
+          }
+        }
+      }
+    },
+    "/blogs/{id}": {
+      "get": {
+        "summary": "Get a specific Blog-Entry",
+        "description": "Retrieve a single blog entry by its unique ID.",
+        "operationId": "get-one-blog-entry",
+        "parameters": [
+          {"$ref": "#/components/parameters/id"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Blog entry retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlogEntry"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blog entry with specified ID not found."
+          },
+          "400": {
+            "description": "Invalid ID format."
+          }
+        },
+        "tags": ["blog"]
+      },
+      "patch": {
+        "summary": "Update an existing Blog-Entry",
+        "description": "Update the details of a blog entry by its ID.",
+        "operationId": "update-existing-blog-entry",
+        "tags": ["blog"],
+        "parameters": [
+          {"$ref": "#/components/parameters/id"}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BlogEntry"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Blog entry updated successfully."
+          },
+          "400": {
+            "description": "Invalid request body or parameters."
+          },
+          "404": {
+            "description": "Blog entry with specified ID not found."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an existing Blog-Entry",
+        "description": "Delete a blog entry by its ID.",
+        "operationId": "delete-existing-blog-entry",
+        "tags": ["blog"],
+        "parameters": [
+          {"$ref": "#/components/parameters/id"}
+        ],
+        "responses": {
+          "204": {
+            "description": "Blog entry deleted successfully."
+          },
+          "400": {
+            "description": "Invalid ID format."
+          },
+          "404": {
+            "description": "Blog entry with specified ID not found."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BlogEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "f9b1d0fc-3b6a-4d56-8d77-7f8c072e5a1b"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-04-25T13:37:00Z"
+          },
+          "headline": {
+            "type": "string",
+            "example": "My cool Blog Headline"
+          },
+          "text": {
+            "type": "string",
+            "example": "Lorem ipsum dolor sit amet, consetetur sadipscing"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "id": {
+        "in": "path",
+        "name": "id",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "description": "Unique identifier of the Blog-Entry.",
+        "example": "f9b1d0fc-3b6a-4d56-8d77-7f8c072e5a1b"
+      }
+    }
+  }
+}
