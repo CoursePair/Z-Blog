@@ -60,3 +60,4 @@ Nur eine kleine Auswahl - ansonsten ist Google dein Freund
 <h2>Tags</h2>
 <strong>GO</strong>, <strong>Rest-API</strong>, <strong>Datenbank</strong>, <strong>Docker</strong>, <strong>Caching (Redis)</strong>, <strong>API-Authentifizierung/Authorisierung</strong>, <strong>Unit-Tests</strong>, <strong>OpenAPI</strong>
 # Z-Blog
+# Z-Blog
