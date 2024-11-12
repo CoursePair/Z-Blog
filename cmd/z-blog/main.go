@@ -4,6 +4,7 @@ import (
 	config "Z-Blog/internal/configuration"
 	"Z-Blog/internal/handlers"
 	"Z-Blog/internal/repository"
+	"Z-Blog/internal/services"
 	"fmt"
 	"log"
 	"net/http"
@@ -16,9 +17,18 @@ func main() {
 	}
 
 	address := cfg.Adress
+
+	handleBlogs := http.HandlerFunc(handlers.HandleBlogs)
+	handleSpecificBlog := http.HandlerFunc(handlers.HandlerForSpecificBlog)
+
+	blogs := services.JWTMiddleware(handleBlogs)
+	specificBlog := services.JWTMiddleware(handleSpecificBlog)
+
 	repository.InitDB()
-	http.HandleFunc("/blogs", handlers.HandleBlogs)
-	http.HandleFunc("/blogs/", handlers.HandlerForSpecificBlog)
+	http.HandleFunc("/register", handlers.HandlerUserRegister)
+	http.HandleFunc("/login", handlers.HandlerUserLogin)
+	http.Handle("/blogs", blogs)
+	http.Handle("/blogs/", specificBlog)
 
 	err = http.ListenAndServe(address, nil)
 	if err != nil {
